@@ -1,7 +1,15 @@
 {
   "name": "@rikalabs/logpoint",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "HTTP logpoint debugger CLI built with Bun and Effect",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rika-Labs/logpoint"
+  },
+  "homepage": "https://github.com/Rika-Labs/logpoint#readme",
+  "bugs": {
+    "url": "https://github.com/Rika-Labs/logpoint/issues"
+  },
   "license": "MIT",
   "author": "Rika Labs",
   "type": "module",
