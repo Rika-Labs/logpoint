@@ -1,0 +1,65 @@
+mode: strict
+
+ignore:
+  - node_modules
+  - dist
+  - coverage
+  - .repo-lint-cache
+
+layout:
+  type: dir
+  children:
+    src:
+      type: dir
+      children:
+        cli.ts: {}
+        collector.ts: {}
+        inject.ts: {}
+        cleanup.ts: {}
+        analyze.ts: {}
+        validate.ts: {}
+        doctor.ts: {}
+        lib:
+          type: dir
+          children:
+            errors.ts: {}
+            schema.ts: {}
+            services.ts: {}
+            templates.ts: {}
+            secrets.ts: {}
+            language.ts: {}
+            jsonl.ts: {}
+            render.ts: {}
+            injection-engine.ts: {}
+            cli-args.ts: {}
+    test:
+      type: dir
+      optional: true
+      children:
+        "$tests":
+          type: many
+          pattern: "*.test.ts"
+    package.json: {}
+    bun.lock:
+      optional: true
+    tsconfig.json: {}
+    oxlint.json: {}
+    repo-lint.config.yaml: {}
+    SKILL.md: {}
+    README.md:
+      optional: true
+    docs:
+      type: dir
+      optional: true
+      children:
+        "$markdown":
+          type: many
+          pattern: "*.md"
+    agents:
+      type: dir
+      children:
+        debugger.md: {}
+
+rules:
+  forbidNames:
+    - .DS_Store
