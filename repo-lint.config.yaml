@@ -1,6 +1,7 @@
 mode: strict
 
 ignore:
+  - .git
   - node_modules
   - dist
   - coverage
@@ -42,6 +43,19 @@ layout:
     package.json: {}
     bun.lock:
       optional: true
+    .gitignore:
+      optional: true
+    .github:
+      type: dir
+      optional: true
+      children:
+        workflows:
+          type: dir
+          optional: true
+          children:
+            "$workflows":
+              type: many
+              pattern: "*.yml"
     tsconfig.json: {}
     oxlint.json: {}
     repo-lint.config.yaml: {}
