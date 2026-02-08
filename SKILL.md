@@ -20,19 +20,78 @@ allowed-tools:
   - Write
 ---
 
+## Manifest Contract
+Use this shape when writing `/tmp/logpoints.json`:
+
+```json
+{
+  "port": 9111,
+  "projectRoot": ".",
+  "language": "typescript",
+  "logpoints": [
+    {
+      "id": "hp1",
+      "file": "web/src/main.tsx",
+      "line": 23,
+      "label": "hydrate root branch",
+      "hypothesis": "SSR and client trees diverge before hydration",
+      "capture": ["rootElement.hasChildNodes()", "rootElement.innerHTML.length"],
+      "maxHits": 100
+    }
+  ]
+}
+```
+
+Required fields per logpoint:
+- `id`: lowercase slug matching `^[a-z0-9_-]+$`
+- `file`: target source file path
+- `line`: positive integer line number
+- `label`: short human-readable label
+- `hypothesis`: what this logpoint is testing
+- `capture`: non-empty array of variable/expression strings
+
+Optional fields:
+- top-level `port` (default `9111`)
+- top-level `projectRoot` (default `"."`)
+- top-level `language` (auto-detected from extension if omitted)
+- per-logpoint `maxHits` (default `100`)
+
+Strict schema notes:
+- Use `capture`, not `variables`.
+- `label` is required.
+- Do not add extra manifest envelope fields unless supported by the CLI.
+
+Validation command:
+- `logpoint validate --manifest /tmp/logpoints.json`
+
+Common validation failures:
+- missing `label`:
+  add `label` to each logpoint object
+- missing `capture`:
+  rename `variables` to `capture` and ensure it is a non-empty array
+- bad `id` format:
+  use lowercase letters, numbers, `_`, and `-` only
+
 ## Phase 1 - Hypothesize
 1. Read files mentioned by the user.
 2. Compare expected behavior with observed behavior.
 3. Produce 3 to 5 ranked hypotheses.
 4. For each hypothesis identify file, line, and variable captures.
 5. Confirm the proposed manifest with the user.
+6. Ensure each hypothesis maps to concrete `file`, `line`, and `capture` fields in manifest shape above.
 
 ## Phase 2 - Instrument
 1. Write `/tmp/logpoints.json` manifest from hypotheses.
-2. Start collector: `logpoint collector --port 9111 --timeout 300 --output /tmp/debug-logpoints.jsonl`.
-3. Inject logpoints: `logpoint inject --manifest /tmp/logpoints.json`.
-4. Show an injection summary and touched files.
-5. Ask the user to reproduce and confirm when complete.
+2. Validate manifest: `logpoint validate --manifest /tmp/logpoints.json`.
+3. Start collector: `logpoint collector --port 9111 --timeout 300 --output /tmp/debug-logpoints.jsonl`.
+4. Inject logpoints: `logpoint inject --manifest /tmp/logpoints.json`.
+5. Show an injection summary and touched files.
+6. Ask the user to reproduce and confirm when complete.
+
+Instrumentation quality bar:
+- Prefer 3-5 high-signal logpoints first.
+- Capture only variables needed to prove or disprove each hypothesis.
+- Avoid sensitive variables; if uncertain, exclude and add a safer proxy value.
 
 ## Phase 3 - Analyze
 1. Run: `logpoint analyze --input /tmp/debug-logpoints.jsonl --format markdown`.
