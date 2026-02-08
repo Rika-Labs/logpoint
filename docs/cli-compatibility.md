@@ -41,6 +41,12 @@ cp -R agents ~/.config/opencode/skills/debug-logpoints/
 cp -R agents ~/.config/agents/skills/debug-logpoints/
 ```
 
+One-line installer:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Rika-Labs/logpoint/main/scripts/install-skill.sh | bash
+```
+
 ## Recommended Project Layout
 
 - Keep one canonical `SKILL.md` in this package.

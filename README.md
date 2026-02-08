@@ -12,6 +12,19 @@ bun add -g @rikalabs/logpoint
 
 If you do not install globally, use `bunx @rikalabs/logpoint <command>`.
 
+### One-Line Skill Install (Claude, Codex, OpenCode, Amp)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Rika-Labs/logpoint/main/scripts/install-skill.sh | bash
+```
+
+This installs `SKILL.md` and `agents/debugger.md` into:
+
+- `~/.claude/skills/debug-logpoints/`
+- `~/.agents/skills/debug-logpoints/`
+- `~/.config/opencode/skills/debug-logpoints/`
+- `~/.config/agents/skills/debug-logpoints/`
+
 ## Commands
 
 ```bash

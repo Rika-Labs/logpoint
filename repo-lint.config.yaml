@@ -55,6 +55,11 @@ layout:
         "$markdown":
           type: many
           pattern: "*.md"
+    scripts:
+      type: dir
+      optional: true
+      children:
+        install-skill.sh: {}
     agents:
       type: dir
       children:
